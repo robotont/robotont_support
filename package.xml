@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package>
+    <name>robotont_support</name>
+    <version>0.0.1</version>
+    <description>The robotont_support package</description>
+    <maintainer email="veiko.vunder@ut.ee">Veiko Vunder</maintainer>
+    <license>Apache 2.0</license>
+    <buildtool_depend>catkin</buildtool_depend>
+    
+    <run_depend>robotont_driver</run_depend>
+    <run_depend>realsense2_ros</run_depend>
+    <run_depend>topic_tools</run_depend>
+</package>
