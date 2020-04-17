@@ -15,5 +15,12 @@
 
   <rosparam ns="robotont" file="$(find robotont_driver)/config/robotont_params.yaml" command="load" />
   <node ns="robotont" pkg="robotont_driver" name="driver_node" type="driver_node" output="screen" />
+
+  <param name="/robotont/robot_description" command="$(find xacro)/xacro $(find robotont_description)/urdf/robotont_realsense.urdf.xacro" />
+
+   <!-- State publishers -->
+  <node ns="/robotont" name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  <node ns="/robotont" name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+
 </launch>
 
