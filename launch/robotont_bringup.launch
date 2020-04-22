@@ -20,7 +20,7 @@
 
    <!-- State publishers -->
   <node ns="/robotont" name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
-  <node ns="/robotont" name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+  <node ns="/robotont" name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 
 </launch>
 
