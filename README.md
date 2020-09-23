@@ -23,8 +23,8 @@ roslaunch robotont_support robotont_bringup.launch realsense:=false
 
 ### cam\_throttling.launch
 
-* This launch file uses throttling node from ```topic_tools``` package to create camera topics slowed down the publishing rates. This is useful when trying to transfer image/depth streams to a remote computer in limited bandwitdh conditions.
+* This launch file uses throttling node from ```topic_tools``` package to create additional ```..._throttled``` depth camera topics with slowed down publishing rates. Throttling becomes useful when trying to transfer image/depth streams to a remote computer in limited bandwitdh conditions. Use the ```cam_fps``` argument to set the desired publishing rate for the throttled topics.
 
 ```bash
-roslaunch robotont_support robotont_bringup.launch realsense:=false
+roslaunch robotont_support cam_throttling.launch cam_fps:=5
 ```
