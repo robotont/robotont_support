@@ -18,7 +18,7 @@
   <rosparam ns="robotont" file="$(find robotont_driver)/config/robotont_params.yaml" command="load" />
   <node ns="robotont" pkg="robotont_driver" name="driver_node" type="driver_node" output="screen" />
 
-  <param if="$(arg realsense)" name="/robotont/robot_description" command="$(find xacro)/xacro $(find robotont_nuc_description)/urdf/robotont_realsense.urdf.xacro use_nominal_extrinsics:=false add_plug:=false" />
+  <param if="$(arg realsense)" name="/robotont/robot_description" command="$(find xacro)/xacro $(find robotont_nuc_description)/urdf/robotont_realsense.urdf.xacro" />
   <param unless="$(arg realsense)" name="/robotont/robot_description" command="$(find xacro)/xacro $(find robotont_description)/urdf/robotont_base.urdf.xacro" />
 
    <!-- State publishers -->
