@@ -19,20 +19,16 @@
   <include unless="$(arg realsense)" file="$(find robotont_description)/launch/upload_description.launch">
     <arg name="__ns" value="$(arg __ns)"/>
   </include>
-
+  <include file="$(find robotont_driver)/launch/driver_basic.launch">
+    <arg name="__ns" value="$(arg __ns)"/>
+  </include>
   <group unless="$(eval prefix == '_')">
     <include if="$(arg realsense)" file="$(find realsense2_camera)/launch/rs_aligned_depth.launch">
       <arg name="tf_prefix" value="$(arg prefix)camera"/>
     </include>
-    <include file="$(find robotont_driver)/launch/driver_basic.launch">
-      <arg name="prefix" value="$(arg prefix)"/>
-    </include>
   </group>
   <group if="$(eval prefix == '_')">
     <include if="$(arg realsense)" file="$(find realsense2_camera)/launch/rs_aligned_depth.launch"/>
-    <include file="$(find robotont_driver)/launch/driver_basic.launch">
-      <arg name="prefix" value=""/>
-    </include>
   </group>
    <!-- State publishers -->
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
