@@ -5,11 +5,16 @@
 
   <arg name="realsense" default="true" />
   <arg name="__ns" default=""/>
-  <arg name="prefix" default="$(arg __ns)_"/>
-  
+  <!-- As eval may not contain double underscore expressions, a new argument is defined to by-pass this issue. -->
+  <arg name="eval_underscore_bypass" value="$(arg __ns)"/>
+  <!-- When a namespace is specified, it is also converted into prefix with a trailing underscore. -->
+  <arg if="$(eval eval_underscore_bypass == '')" name="prefix" default=''/>
+  <arg unless="$(eval eval_underscore_bypass == '')" name="prefix" default="$(arg __ns)_"/>
+ 
 <rosparam if="$(arg realsense)">
 /camera/aligned_depth_to_color/image_raw/compressedDepth/png_level: 5
 </rosparam>
+
   <include if="$(arg realsense)" file="$(find robotont_support)/launch/cam_throttling.launch">
     <arg name="cam_fps" value="5" />
   </include>
@@ -22,14 +27,10 @@
   <include file="$(find robotont_driver)/launch/driver_basic.launch">
     <arg name="__ns" value="$(arg __ns)"/>
   </include>
-  <group unless="$(eval prefix == '_')">
-    <include if="$(arg realsense)" file="$(find realsense2_camera)/launch/rs_aligned_depth.launch">
-      <arg name="tf_prefix" value="$(arg prefix)camera"/>
-    </include>
-  </group>
-  <group if="$(eval prefix == '_')">
-    <include if="$(arg realsense)" file="$(find realsense2_camera)/launch/rs_aligned_depth.launch"/>
-  </group>
+  <include if="$(arg realsense)" file="$(find realsense2_camera)/launch/rs_aligned_depth.launch">
+    <arg name="tf_prefix" value="$(arg prefix)camera"/>
+  </include>
+
    <!-- State publishers -->
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
