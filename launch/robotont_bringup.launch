@@ -37,7 +37,7 @@
     </include>
   </group>
 
-  <group if="$(arg realsense)">
+  <group unless="$(arg realsense)">
     <include file="$(find robotont_description)/launch/upload_description.launch">
       <arg name="__ns" value="$(arg __ns)"/>
     </include>
