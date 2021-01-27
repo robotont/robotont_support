@@ -7,9 +7,9 @@
   <arg name="__ns" default=""/>
   <!-- As eval may not contain double underscore expressions, a new argument is defined to by-pass this issue. -->
   <arg name="eval_underscore_bypass" value="$(arg __ns)"/>
-  <!-- When a namespace is specified, it is also converted into prefix with a trailing underscore. -->
+  <!-- When a namespace is specified, it is also converted into prefix with a trailing slash. -->
   <arg if="$(eval eval_underscore_bypass == '')" name="prefix" default=''/>
-  <arg unless="$(eval eval_underscore_bypass == '')" name="prefix" default="$(arg __ns)_"/>
+  <arg unless="$(eval eval_underscore_bypass == '')" name="prefix" default="$(arg __ns)/"/>
  
 <rosparam if="$(arg realsense)">
 /camera/aligned_depth_to_color/image_raw/compressedDepth/png_level: 5
