@@ -38,9 +38,9 @@
   </group>
 
   <group if="$(arg realsense)">
-  <include file="$(find robotont_description)/launch/upload_description.launch">
-    <arg name="__ns" value="$(arg __ns)"/>
-  </include>
+    <include file="$(find robotont_description)/launch/upload_description.launch">
+      <arg name="__ns" value="$(arg __ns)"/>
+    </include>
   </group>
 
    <!-- State publishers -->
