@@ -46,7 +46,7 @@
 
   <group if="$(arg webapp)">
     <include file="$(find robotont_webapp)/launch/webapp.launch">
-      <!--arg name="__ns" value="$(arg __ns)"/-->
+      <arg name="__ns" value="$(arg __ns)"/>
     </include>
   </group>
 
