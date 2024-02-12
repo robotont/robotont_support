@@ -1,16 +1,25 @@
 <?xml version="1.0"?>
-<package>
-    <name>robotont_support</name>
-    <version>0.0.1</version>
-    <description>The robotont_support package</description>
-    <maintainer email="veiko.vunder@ut.ee">Veiko Vunder</maintainer>
-    <license>Apache 2.0</license>
-    <buildtool_depend>catkin</buildtool_depend>
-    
-    <run_depend>robotont_driver</run_depend>
-    <run_depend>robotont_description</run_depend>
-    <run_depend>robotont_nuc_description</run_depend>
-    <run_depend>robotont_webapp</run_depend>
-    <run_depend>realsense2_camera</run_depend>
-    <run_depend>topic_tools</run_depend>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>robotont_support</name>
+  <version>0.0.1</version>
+  <description>The robotont_support package</description>
+  <maintainer email="veiko.vunder@ut.ee">Veiko Vunder</maintainer>
+  <author>Veiko Vunder</author>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <exec_depend>robotont_driver</exec_depend>
+  <exec_depend>realsense2_camera</exec_depend>
+  <!-- <exec_depend>robotont_description</exec_depend> -->
+  <!-- <exec_depend>robotont_nuc_description</exec_depend> -->
+  <!-- <exec_depend>robotont_webapp</exec_depend> -->
+  <!-- <exec_depend>topic_tools</exec_depend> -->
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+  
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
 </package>
