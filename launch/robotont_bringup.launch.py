@@ -37,7 +37,7 @@ def generate_launch_description():
   # Specify the actions
   robotont_driver_node = Node(
     package='robotont_driver',
-    executable='driver_basic',
+    executable='driver_node',
     name='robotont_driver_node',
     output='screen'
   )
@@ -84,12 +84,9 @@ def generate_launch_description():
 
   # Add the actions to the launch description
   ld.add_action(realsense_arg)
-  # Add realsense camera only if the argument is true
-  ld.add_action(realsense_include)
-
-  #ld.add_action(realsense_param)
   ld.add_action(webapp_arg)
-  #ld.add_action(robotont_driver_node)
+  ld.add_action(realsense_include)
+  ld.add_action(robotont_driver_node)
   #ld.add_action(joint_state_publisher_node)
   #ld.add_action(robot_state_publisher_node)
 
