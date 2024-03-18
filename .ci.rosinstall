@@ -14,3 +14,7 @@
     local-name: robotont/robotont_nuc_description
     uri: https://github.com/robotont/robotont_nuc_description.git
     version: humble-devel
+- git:
+    local-name: robotont/laserscan_to_ranges
+    uri: https://github.com/ut-ims-robotics/laserscan_to_ranges.git
+    version: humble-devel

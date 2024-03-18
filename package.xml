@@ -11,6 +11,7 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
   <exec_depend>robotont_driver</exec_depend>
   <exec_depend>realsense2_camera</exec_depend>
+  <exec_depend>laserscan_to_ranges</exec_depend>
   <!-- <exec_depend>robotont_description</exec_depend> -->
   <!-- <exec_depend>robotont_nuc_description</exec_depend> -->
   <!-- <exec_depend>robotont_webapp</exec_depend> -->
