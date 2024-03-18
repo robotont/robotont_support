@@ -9,7 +9,7 @@ from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 from launch.substitutions import LaunchConfiguration
-from launch.substitutions import TextSubstitution 
+from launch.substitutions import TextSubstitution
 
 from launch.conditions import IfCondition
 
@@ -58,6 +58,7 @@ def generate_launch_description():
 
   should_launch_realsense = LaunchConfiguration('realsense')
 
+
   realsense_include = IncludeLaunchDescription(
     PythonLaunchDescriptionSource(
       os.path.join(
@@ -65,6 +66,29 @@ def generate_launch_description():
         'launch/rs_launch.py'
       )
     ),
+    launch_arguments={
+      'unite_imu_method': '1',
+      'enable_accel': 'True',
+      'enable_gyro': 'True'
+    }.items(),
+    condition=IfCondition(should_launch_realsense)
+  )
+
+  depthimage_to_laserscan_include = IncludeLaunchDescription(
+    PythonLaunchDescriptionSource(
+      os.path.join(
+        get_package_share_directory('depthimage_to_laserscan'),
+        'launch/depthimage_to_laserscan-launch.py'
+      )
+    ),
+    condition=IfCondition(should_launch_realsense)
+  )
+
+  laserscan_to_ranges_node = Node(
+    package='laserscan_to_ranges',
+    executable='laserscan_to_ranges',
+    name='laserscan_to_ranges_node',
+    output='screen',
     condition=IfCondition(should_launch_realsense)
   )
 
@@ -87,6 +111,8 @@ def generate_launch_description():
   ld.add_action(webapp_arg)
   ld.add_action(realsense_include)
   ld.add_action(robotont_driver_node)
+  ld.add_action(depthimage_to_laserscan_include)
+  ld.add_action(laserscan_to_ranges_node)
   #ld.add_action(joint_state_publisher_node)
   #ld.add_action(robot_state_publisher_node)
 
