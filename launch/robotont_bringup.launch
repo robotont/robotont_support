@@ -38,7 +38,14 @@
     <include file="$(find robotont_description)/launch/upload_description.launch">
       <arg name="__ns" value="$(arg __ns)"/>
     </include>
+    <include file="$(find laserscan_to_ranges)/launch/laserscan_to_ranges.launch">
+      <arg name="__ns" value="$(arg __ns)"/>
+    </include>
   </group>
+
+  <include file="$(find demo_teleop)/launch/teleop_joy.launch">
+    <arg name="__ns" value="$(arg __ns)"/>
+  </include>
 
    <!-- State publishers -->
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
