@@ -39,7 +39,6 @@
       <arg name="__ns" value="$(arg __ns)"/>
     </include>
     <include file="$(find laserscan_to_ranges)/launch/laserscan_to_ranges.launch" />
-    </include>
   </group>
 
   <include file="$(find demo_teleop)/launch/teleop_joy.launch" />
