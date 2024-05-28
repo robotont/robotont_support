@@ -32,13 +32,14 @@
     <include file="$(find robotont_support)/launch/cam_throttling.launch">
       <arg name="cam_fps" value="5" />
     </include>
+    <include file="$(find laserscan_to_ranges)/launch/laserscan_to_ranges.launch" />
+    <include file="$(find robotont_support)/launch/depthimage_to_laserscan.launch" />
   </group>
 
   <group unless="$(arg realsense)">
     <include file="$(find robotont_description)/launch/upload_description.launch">
       <arg name="__ns" value="$(arg __ns)"/>
     </include>
-    <include file="$(find laserscan_to_ranges)/launch/laserscan_to_ranges.launch" />
   </group>
 
   <include file="$(find demo_teleop)/launch/teleop_joy.launch" />
