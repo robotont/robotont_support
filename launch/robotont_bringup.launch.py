@@ -69,6 +69,7 @@ def generate_launch_description():
     launch_arguments={
       'camera_namespace': '',
       'camera_name': 'camera',
+      'align_depth.enable': 'true',
       'unite_imu_method': '1',
       'enable_accel': 'True',
       'enable_gyro': 'True'
