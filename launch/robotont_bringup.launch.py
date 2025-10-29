@@ -100,6 +100,17 @@ def generate_launch_description():
     '/camera/aligned_depth_to_color/image_raw/compressedDepth/png_level': 5
   }
 
+  # Teleop Joy Launch
+  teleop_joy_include = IncludeLaunchDescription(
+      PythonLaunchDescriptionSource(
+          os.path.join(
+              get_package_share_directory('demo_teleop'),
+              'launch/teleop_joy.launch.py'
+          )
+      )
+  )
+
+
   # Load the robot description
   upload_description = Node(
     package='robotont_description',
@@ -116,6 +127,7 @@ def generate_launch_description():
   ld.add_action(robotont_driver_node)
   ld.add_action(depthimage_to_laserscan_include)
   ld.add_action(laserscan_to_ranges_node)
+  ld.add_action(teleop_joy_include)
   #ld.add_action(joint_state_publisher_node)
   #ld.add_action(robot_state_publisher_node)
 
