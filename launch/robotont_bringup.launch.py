@@ -13,6 +13,7 @@ def launch_setup(context, *args, **kwargs):
     frame_prefix = LaunchConfiguration('frame_prefix').perform(context)
     generation = LaunchConfiguration('generation').perform(context)
     realsense_enabled = LaunchConfiguration('realsense').perform(context) == 'true'
+    gamepad_conf = LaunchConfiguration('gamepad_conf').perform(context)
     
     # If frame_prefix empty, use namespace as prefix
     if not frame_prefix:
@@ -119,7 +120,10 @@ def launch_setup(context, *args, **kwargs):
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory('demo_teleop'), 'launch/teleop_joy.launch.py')
         ),
-        launch_arguments={'namespace': namespace}.items()
+        launch_arguments={
+            'namespace': namespace,
+            'gamepad_conf': gamepad_conf
+        }.items()
     ))
     
     return nodes
@@ -130,7 +134,8 @@ def generate_launch_description():
         DeclareLaunchArgument('namespace', default_value=''),
         DeclareLaunchArgument('frame_prefix', default_value=''),
         DeclareLaunchArgument('generation', default_value='3', choices=['2.1', '3', 'lite3']),
-        DeclareLaunchArgument('realsense', default_value='true', choices=['true', 'false']),
+        DeclareLaunchArgument('realsense', default_value='false', choices=['true', 'false']),
+        DeclareLaunchArgument('gamepad_conf', default_value='trust.yaml'),
         
         # TODO: fake_hardware argument should be added to easily switch between real and fake hardware from a single bringup entrypoint
         
