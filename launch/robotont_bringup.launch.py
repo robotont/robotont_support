@@ -13,6 +13,7 @@ def launch_setup(context, *args, **kwargs):
     frame_prefix = LaunchConfiguration('frame_prefix').perform(context)
     generation = LaunchConfiguration('generation').perform(context)
     realsense_enabled = LaunchConfiguration('realsense').perform(context) == 'true'
+    lidar_enabled = LaunchConfiguration('lidar').perform(context) == 'true'
     gamepad_conf = LaunchConfiguration('gamepad_conf').perform(context)
     
     # If frame_prefix empty, use namespace as prefix
@@ -48,18 +49,19 @@ def launch_setup(context, *args, **kwargs):
             }.items()
         ))
         
-        # nodes.append(Node(
-        #     package='rplidar_ros',
-        #     executable='rplidar_composition',
-        #     name='rplidar',
-        #     namespace=namespace,
-        #     parameters=[{
-        #         'serial_port': '/dev/ttyUSB0',
-        #         'frame_id': f'{frame_prefix}/laser' if frame_prefix else 'laser',
-        #         'angle_compensate': True
-        #     }],
-        #     output='screen'
-        # ))
+        if lidar_enabled:
+            nodes.append(Node(
+                package='rplidar_ros',
+                executable='rplidar_composition',
+                name='rplidar',
+                namespace=namespace,
+                parameters=[{
+                    'serial_port': '/dev/lidar',
+                    'frame_id': f'{frame_prefix}/laser' if frame_prefix else 'laser',
+                    'angle_compensate': True
+                }],
+                output='screen'
+            ))
         
     elif generation in ['2.1', '3'] and realsense_enabled:
         # Gen 2.1/3: RealSense + depth to laserscan
@@ -135,6 +137,7 @@ def generate_launch_description():
         DeclareLaunchArgument('frame_prefix', default_value=''),
         DeclareLaunchArgument('generation', default_value='3', choices=['2.1', '3', 'lite3']),
         DeclareLaunchArgument('realsense', default_value='false', choices=['true', 'false']),
+        DeclareLaunchArgument('lidar', default_value='false', choices=['true', 'false']),
         DeclareLaunchArgument('gamepad_conf', default_value='trust.yaml'),
         
         # TODO: fake_hardware argument should be added to easily switch between real and fake hardware from a single bringup entrypoint
