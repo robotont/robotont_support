@@ -50,14 +50,16 @@ def launch_setup(context, *args, **kwargs):
         ))
         
         if lidar_enabled:
-            nodes.append(Node(
+            nodes.insert(0, Node(
                 package='rplidar_ros',
-                executable='rplidar_composition',
-                name='rplidar',
+                executable='rplidar_node',
+                name='rplidar_node',
                 namespace=namespace,
                 parameters=[{
+                    'channel_type': 'serial',
                     'serial_port': '/dev/lidar',
-                    'frame_id': f'{frame_prefix}/laser' if frame_prefix else 'laser',
+                    'serial_baudrate': 256000,
+                    'frame_id': f'{frame_prefix}/lidar_link' if frame_prefix else 'lidar_link',
                     'angle_compensate': True
                 }],
                 output='screen'
