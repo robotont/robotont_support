@@ -59,7 +59,7 @@ def launch_setup(context, *args, **kwargs):
                     'channel_type': 'serial',
                     'serial_port': '/dev/lidar',
                     'serial_baudrate': 256000,
-                    'frame_id': f'{frame_prefix}/lidar_link' if frame_prefix else 'lidar_link',
+                    'frame_id': f'{frame_prefix}/laser_link' if frame_prefix else 'laser_link',
                     'angle_compensate': True
                 }],
                 output='screen'
