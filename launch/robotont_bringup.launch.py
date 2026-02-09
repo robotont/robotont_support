@@ -14,6 +14,7 @@ def launch_setup(context, *args, **kwargs):
     generation = LaunchConfiguration('generation').perform(context)
     realsense_enabled = LaunchConfiguration('realsense').perform(context) == 'true'
     lidar_enabled = LaunchConfiguration('lidar').perform(context) == 'true'
+    camera_enabled = LaunchConfiguration('camera').perform(context) == 'true'
     gamepad_conf = LaunchConfiguration('gamepad_conf').perform(context)
     
     # If frame_prefix empty, use namespace as prefix
@@ -35,7 +36,7 @@ def launch_setup(context, *args, **kwargs):
     
     # Generation-specific setup
     if generation == 'lite3':
-        # Lite3: RPLidar + lite description
+        # Lite3: RPLidar + IMX500 camera + lite description
         nodes.append(IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
                 os.path.join(get_package_share_directory('robotont_lite_description'), 'launch/upload_description.launch.py')
@@ -63,6 +64,29 @@ def launch_setup(context, *args, **kwargs):
                     'angle_compensate': True
                 }],
                 output='screen'
+            ))
+        
+        if camera_enabled:
+            nodes.append(Node(
+                package='camera_ros',
+                executable='camera_node',
+                name='camera',
+                namespace=namespace,
+                parameters=[{
+                    'camera': 0,
+                    'width': 640,
+                    'height': 480,
+                    'framerate': 10.0,
+                    'format': 'YUYV',
+                    'camera_name': 'camera',
+                    'frame_id': f'{frame_prefix}/camera_link' if frame_prefix else 'camera_link',
+                    'orientation': 90, # Not supported!!!
+                }],
+                output='screen',
+                remappings=[
+                    ('image', 'camera/image_raw'),
+                    ('camera_info', 'camera/camera_info')
+                ]
             ))
         
     elif generation in ['2.1', '3'] and realsense_enabled:
@@ -140,6 +164,7 @@ def generate_launch_description():
         DeclareLaunchArgument('generation', default_value='3', choices=['2.1', '3', 'lite3']),
         DeclareLaunchArgument('realsense', default_value='false', choices=['true', 'false']),
         DeclareLaunchArgument('lidar', default_value='false', choices=['true', 'false']),
+        DeclareLaunchArgument('camera', default_value='false', choices=['true', 'false']),
         DeclareLaunchArgument('gamepad_conf', default_value='trust.yaml'),
         
         # TODO: fake_hardware argument should be added to easily switch between real and fake hardware from a single bringup entrypoint
