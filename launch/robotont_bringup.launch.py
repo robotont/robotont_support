@@ -15,6 +15,7 @@ def launch_setup(context, *args, **kwargs):
     realsense_enabled = LaunchConfiguration('realsense').perform(context) == 'true'
     lidar_enabled = LaunchConfiguration('lidar').perform(context) == 'true'
     camera_enabled = LaunchConfiguration('camera').perform(context) == 'true'
+    slam_enabled = LaunchConfiguration('slam').perform(context) == 'true'
     gamepad_conf = LaunchConfiguration('gamepad_conf').perform(context)
     
     # If frame_prefix empty, use namespace as prefix
@@ -59,12 +60,24 @@ def launch_setup(context, *args, **kwargs):
                 parameters=[{
                     'channel_type': 'serial',
                     'serial_port': '/dev/lidar',
-                    'serial_baudrate': 256000,
+                    'serial_baudrate': 1000000,
                     'frame_id': f'{frame_prefix}/laser_link' if frame_prefix else 'laser_link',
-                    'angle_compensate': True
+                    'angle_compensate': True,
+                    'scan_mode': 'DenseBoost'
                 }],
                 output='screen'
             ))
+            if slam_enabled:
+                nodes.append(IncludeLaunchDescription(
+                    PythonLaunchDescriptionSource(
+                        os.path.join(get_package_share_directory('slam_toolbox'), 'launch', 'online_async_launch.py')
+                    ),
+                    launch_arguments={
+                        'namespace': namespace,
+                        'use_sim_time': 'false',
+                        'params_file': os.path.join(get_package_share_directory('robotont_lite_description'), 'config', 'slam', 'slam_toolbox_lite3.yaml')
+                    }.items()
+                ))
         
         if camera_enabled:
             nodes.append(Node(
@@ -79,8 +92,7 @@ def launch_setup(context, *args, **kwargs):
                     'framerate': 10.0,
                     'format': 'YUYV',
                     'camera_name': 'camera',
-                    'frame_id': f'{frame_prefix}/camera_link' if frame_prefix else 'camera_link',
-                    'orientation': 90, # Not supported!!!
+                    'frame_id': f'{frame_prefix}/camera_link' if frame_prefix else 'camera_link'
                 }],
                 output='screen',
                 remappings=[
@@ -166,6 +178,7 @@ def generate_launch_description():
         DeclareLaunchArgument('lidar', default_value='false', choices=['true', 'false']),
         DeclareLaunchArgument('camera', default_value='false', choices=['true', 'false']),
         DeclareLaunchArgument('gamepad_conf', default_value='trust.yaml'),
+        DeclareLaunchArgument('slam', default_value='false', choices=['true', 'false']),
         
         # TODO: fake_hardware argument should be added to easily switch between real and fake hardware from a single bringup entrypoint
         
