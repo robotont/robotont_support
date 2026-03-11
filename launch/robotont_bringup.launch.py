@@ -155,7 +155,15 @@ def launch_setup(context, *args, **kwargs):
         executable='laserscan_to_ranges',
         name='laserscan_to_ranges',
         namespace=namespace,
-        output='screen'
+        output='screen',
+        parameters=[{
+            'method': 'min',
+            'field_of_view': 0.0,
+            'angle_offset': 180.0,
+            'enable_ranges': True,
+            'range_frame_prefix': frame_prefix + '/range_' if frame_prefix else 'range_',
+            'base_frame': frame_prefix + '/lidar_link' if frame_prefix else ''
+        }],
     ))
     
     nodes.append(IncludeLaunchDescription(
