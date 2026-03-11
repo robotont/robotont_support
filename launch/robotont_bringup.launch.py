@@ -95,6 +95,8 @@ def launch_setup(context, *args, **kwargs):
                     'frame_id': f'{frame_prefix}/camera_link' if frame_prefix else 'camera_link'
                 }],
                 output='screen',
+                respawn=True,
+                respawn_delay=3.0,
                 remappings=[
                     ('image', 'camera/image_raw'),
                     ('camera_info', 'camera/camera_info')
