@@ -36,8 +36,8 @@ def launch_setup(context, *args, **kwargs):
     ))
     
     # Generation-specific setup
-    if generation == 'lite3':
-        # Lite3: RPLidar + IMX500 camera + lite description
+    if generation == '3lite':
+        # gen3 lite: RPLidar + IMX500 camera + lite description
         nodes.append(IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
                 os.path.join(get_package_share_directory('robotont_lite_description'), 'launch/upload_description.launch.py')
@@ -70,12 +70,12 @@ def launch_setup(context, *args, **kwargs):
             if slam_enabled:
                 nodes.append(IncludeLaunchDescription(
                     PythonLaunchDescriptionSource(
-                        os.path.join(get_package_share_directory('slam_toolbox'), 'launch', 'online_async_launch.py')
+                        os.path.join(get_package_share_directory('demo_slam'), 'launch/2d_slam.launch.py')
                     ),
                     launch_arguments={
                         'namespace': namespace,
-                        'use_sim_time': 'false',
-                        'params_file': os.path.join(get_package_share_directory('robotont_lite_description'), 'config', 'slam', 'slam_toolbox_lite3.yaml')
+                        'frame_prefix': frame_prefix,
+                        'lidar_topic': f'{namespace}/scan' if namespace else 'scan'
                     }.items()
                 ))
         
@@ -183,11 +183,11 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument('namespace', default_value=''),
         DeclareLaunchArgument('frame_prefix', default_value=''),
-        DeclareLaunchArgument('generation', default_value='3', choices=['2.1', '3', 'lite3']),
+        DeclareLaunchArgument('generation', default_value='3', choices=['2.1', '3', '3lite']),
         DeclareLaunchArgument('realsense', default_value='false', choices=['true', 'false']),
         DeclareLaunchArgument('lidar', default_value='false', choices=['true', 'false']),
         DeclareLaunchArgument('camera', default_value='false', choices=['true', 'false']),
-        DeclareLaunchArgument('gamepad_conf', default_value='trust.yaml'),
+        DeclareLaunchArgument('gamepad_conf', default_value='gamesir.yaml'),
         DeclareLaunchArgument('slam', default_value='false', choices=['true', 'false']),
         
         # TODO: fake_hardware argument should be added to easily switch between real and fake hardware from a single bringup entrypoint
